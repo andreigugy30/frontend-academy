@@ -4,12 +4,18 @@
 // TypeScript interfaces/types define the shape of the data.
 // Putting them in `shared` means any layer can import them.
 
+// ── CONCEPT: Discriminated Unions ───────────────────────────
+// A discriminated union uses a common field ("kind" / "status")
+// to narrow a type. TypeScript can then check exhaustively.
 export type AsyncState<T> =
 	| { status: "idle" }
 	| { status: "loading" }
 	| { status: "success"; data: T }
 	| { status: "error"; error: string };
 
+// ── CONCEPT: String Literal Union (Enum alternative) ────────
+// Prefer string literal unions over TypeScript `enum` — they
+// are simpler, tree-shakeable, and interop better with JSON.
 export type Priority = "low" | "medium" | "high";
 export type ConceptCategory =
 	| "state"
@@ -21,6 +27,9 @@ export type ConceptCategory =
 	| "performance"
 	| "general";
 
+// ── CONCEPT: Interfaces vs Types ────────────────────────────
+// `interface` = extendable (prefer for object shapes)
+// `type` = flexible (use for unions, primitives, computed)
 export interface Task {
 	id: string;
 	title: string;
@@ -38,6 +47,12 @@ export interface User {
 	avatar?: string;
 }
 
+// ── CONCEPT: Utility Types ───────────────────────────────────
+//   Partial<T>   — all fields optional
+//   Required<T>  — all fields required
+//   Pick<T, K>   — keep only keys K
+//   Omit<T, K>   — remove keys K
+//   Record<K, V> — map K → V
 export type CreateTaskInput = Omit<Task, "id" | "createdAt" | "completed">;
 export type UpdateTaskInput = Partial<
 	Pick<Task, "title" | "description" | "completed" | "priority">
