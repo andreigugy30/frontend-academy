@@ -41,3 +41,44 @@ export function filterTasks(tasks: Task[], filters: TaskFilters): Task[] {
 export function generateId(): string {
 	return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 }
+
+// ── CONCEPT: Date formatting ───────────────────────────────────
+
+export function formatDate(date: string): string {
+	return new Date(date).toLocaleDateString("en-US", {
+		month: "long",
+		day: "numeric",
+		year: "numeric",
+	});
+}
+
+// ── CONCEPT: Type guard ───────────────────────────────────
+// A type guard is a function that returns `value is SomeType`.After calling it in an `if`, TS narrows the type
+
+export function isApiError(error: unknown): error is { message: string } {
+	return (
+		typeof error === "object" &&
+		error !== null &&
+		"message" in error &&
+		typeof (error as Record<string, unknown>).message === "string"
+	);
+}
+
+//Priority -> color mapping
+
+export const PRIORITY_COLORS: Record<string, string> = {
+	low: "#22c55e",
+	medium: "#f59e0b",
+	high: "#ef4444",
+};
+
+export const CATEGORY_LABELS: Record<string, string> = {
+	state: "State Management",
+	"data-fetching": "Data Fetching",
+	routing: "Routing",
+	forms: "Forms",
+	architecture: "Architecture",
+	typescript: "TypeScript",
+	performance: "Performance",
+	general: "General",
+};
