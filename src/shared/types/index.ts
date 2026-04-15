@@ -17,7 +17,7 @@ export type AsyncState<T> =
 // Prefer string literal unions over TypeScript `enum` — they
 // are simpler, tree-shakeable, and interop better with JSON.
 export type Priority = "low" | "medium" | "high";
-export type ConceptCategory =
+export type Category =
 	| "state"
 	| "data-fetching"
 	| "routing"
@@ -36,7 +36,7 @@ export interface Task {
 	description: string;
 	completed: boolean;
 	priority: Priority;
-	category: ConceptCategory;
+	category: Category;
 	createdAt: string;
 }
 
@@ -57,3 +57,24 @@ export type CreateTaskInput = Omit<Task, "id" | "createdAt" | "completed">;
 export type UpdateTaskInput = Partial<
 	Pick<Task, "title" | "description" | "completed" | "priority">
 >;
+
+// ── CONCEPT: Generic Types ───────────────────────────────────
+// Generics let you write reusable logic that works for any type.
+export interface ApiResponse<T> {
+	data: T;
+	message: string;
+	success: boolean;
+}
+
+export interface PaginatedResponse<T> extends ApiResponse<T[]> {
+	total: number;
+	page: number;
+	pageSize: number;
+}
+
+export interface TaskFilters {
+	search: string;
+	priority: Priority | "all";
+	category: Category | "all";
+	showCompleted: boolean;
+}
