@@ -69,9 +69,14 @@ apiClient.interceptors.response.use(
 // knows the shape of what it gets back.
 
 export const api = {
-	get: <T>(url: string) => apiClient.get<T>(url).then((r) => r.data),
-	post: <T>(url: string, data: unknown) =>
-		apiClient.post<T>(url, data).then((r) => r.data),
+	get: async <T>(url: string) => {
+		const response = await apiClient.get<T>(url);
+		return response.data;
+	},
+	post: async <T>(url: string, data: unknown) => {
+		const response = await apiClient.post<T>(url, data);
+		return response.data;
+	},
 	put: <T>(url: string, data: unknown) =>
 		apiClient.put<T>(url, data).then((r) => r.data),
 	patch: <T>(url: string, data: unknown) =>
